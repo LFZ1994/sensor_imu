@@ -259,7 +259,7 @@ class Sensor:
 
         self.serialIDLE_flag = 0
         msg = Imu()
-        msg.header.stamp = self.current_time
+        msg.header.stamp = rospy.Time.now()
         msg.header.frame_id = self.imuId
 
         msg.angular_velocity.x = self.Gyro[0]
@@ -290,7 +290,7 @@ class Sensor:
 
         self.serialIDLE_flag = 0
         msg = MagneticField()
-        msg.header.stamp = self.current_time
+        msg.header.stamp = rospy.Time.now()
         msg.header.frame_id = self.magId
 
         msg.magnetic_field.x = self.Mag[0]
