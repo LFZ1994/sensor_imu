@@ -32,10 +32,6 @@
         <node pkg="tf" type="static_transform_publisher" name="imu_to_mag"
             args="0.0 0.0 0.0 0 0.0 0.0 $(arg imu_frame) $(arg mag_frame) 20">
         </node>       
-
-        <node pkg="tf" type="static_transform_publisher" name="base_to_imu"
-            args="0.07 0.0 0.0 0 0.0 0.0 base_link $(arg base_frame) 20">
-        </node>
     </group>
 
     <group unless="$(eval sensor_name == '')">
