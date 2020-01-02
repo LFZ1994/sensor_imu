@@ -17,7 +17,7 @@
     <group if="$(eval sensor_name == '')">
         <node name="sensor_imu"   pkg="sensor_imu"  type="sensor_imu.py" output="screen">
             <param name="baudrate"   value="115200"/>  
-            <param name="port"  value='/dev/ttyACM0'/>
+            <param name="port"  value='/dev/sensor_imu'/>
             <param name="imu_id"    value="$(arg imu_frame)"/>      <!-- imu link name -->
             <param name="imu_topic" value="$(arg imu_topic)"/>      <!-- topic name -->
             <param name="imu_freq" value="$(arg imu_freq)"/>        <!-- topic freq -->
@@ -26,11 +26,15 @@
             <param name="mag_topic" value="$(arg mag_topic)"/>      <!-- topic name -->
             <param name="mag_freq" value="$(arg mag_freq)"/>        <!-- topic freq -->
         </node>
+        <node pkg="tf" type="static_transform_publisher" name="module_to_imu"
+            args="0.07 0.0 0.0 0 0.0 0.0 $(arg base_frame) $(arg imu_frame) 20">
+        </node>
         <node pkg="tf" type="static_transform_publisher" name="imu_to_mag"
             args="0.0 0.0 0.0 0 0.0 0.0 $(arg imu_frame) $(arg mag_frame) 20">
         </node>       
-        <node pkg="tf" type="static_transform_publisher" name="module_to_imu"
-            args="0.07 0.0 0.0 0 0.0 0.0 $(arg base_frame) $(arg imu_frame) 20">
+
+        <node pkg="tf" type="static_transform_publisher" name="base_to_imu"
+            args="0.07 0.0 0.0 0 0.0 0.0 base_link $(arg base_frame) 20">
         </node>
     </group>
 
@@ -38,7 +42,7 @@
         <group ns="$(arg sensor_name)">
             <node name="sensor_imu"   pkg="sensor_imu"  type="sensor_imu.py" output="screen">
                 <param name="baudrate"   value="115200"/>  
-                <param name="port"  value='/dev/ttyACM0'/>
+                <param name="port"  value='/dev/sensor_imu'/>
                 <param name="imu_id"    value="$(arg sensor_name)/$(arg imu_frame)"/>      <!-- imu link name -->
                 <param name="imu_topic" value="$(arg imu_topic)"/>      <!-- topic name -->
                 <param name="imu_freq" value="$(arg imu_freq)"/>        <!-- topic freq -->
