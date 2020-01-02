@@ -2,7 +2,6 @@
 <launch>
     <!-- support multi sensor in one master -->
     <arg name="sensor_name" default=""/>   <!-- support multi robot -->
-    <arg name="base_frame"       default="imu_module_frame" />  
     <!-- frame -->
     <arg name="imu_frame"       default="imu_frame" /> 
     <arg name="mag_frame"       default="mag_frame" />    
@@ -26,12 +25,6 @@
             <param name="mag_topic" value="$(arg mag_topic)"/>      <!-- topic name -->
             <param name="mag_freq" value="$(arg mag_freq)"/>        <!-- topic freq -->
         </node>
-        <node pkg="tf" type="static_transform_publisher" name="module_to_imu"
-            args="0.07 0.0 0.0 0 0.0 0.0 $(arg base_frame) $(arg imu_frame) 20">
-        </node>
-        <node pkg="tf" type="static_transform_publisher" name="imu_to_mag"
-            args="0.0 0.0 0.0 0 0.0 0.0 $(arg imu_frame) $(arg mag_frame) 20">
-        </node>       
     </group>
 
     <group unless="$(eval sensor_name == '')">
@@ -46,12 +39,6 @@
                 <param name="mag_id"    value="$(arg sensor_name)/$(arg mag_frame)"/>      <!-- link name -->
                 <param name="mag_topic" value="$(arg mag_topic)"/>      <!-- topic name -->
                 <param name="mag_freq" value="$(arg mag_freq)"/>        <!-- topic freq -->
-            </node>
-            <node pkg="tf" type="static_transform_publisher" name="imu_to_mag"
-                args="0.0 0.0 0.0 0 0.0 0.0 $(arg sensor_name)/$(arg imu_frame) $(arg sensor_name)/$(arg mag_frame) 20">
-            </node>       
-            <node pkg="tf" type="static_transform_publisher" name="module_to_imu"
-                args="0.07 0.0 0.0 0 0.0 0.0 $(arg sensor_name)/$(arg base_frame) $(arg sensor_name)/$(arg imu_frame) 20">
             </node>
         </group>
     </group>
