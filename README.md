@@ -9,3 +9,5 @@ Step6: roslaunch sensor_imu sensor_imu.launch
 Now you can get /imu and /mag topic
 Note:Step 1~4 need do only once when you install this package
 
+Change NOTE:
+add imu data mode switch,default is gravity mode,launch use roslaunch sensor_imu sensor_imu.launch gravity:=false can out put none gravity imu data(z,y,z line accel is zero when static or constant speed)

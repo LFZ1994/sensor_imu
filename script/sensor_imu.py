@@ -82,7 +82,7 @@ class Sensor:
         self.magId = rospy.get_param('~mag_id','mag')
         self.mag_topic = rospy.get_param('~mag_topic','mag')
         self.mag_freq = float(rospy.get_param('~mag_freq','70'))
-
+        self.gravity = rospy.get_param('~gravity','true')
         #define param
         self.current_time = rospy.Time.now()
         self.previous_time = self.current_time
@@ -185,7 +185,7 @@ class Sensor:
                                 %(self.hardware_version[0],self.hardware_version[1],self.hardware_version[2],\
                                 self.firmware_version[0],self.firmware_version[1],self.firmware_version[2])
                             rospy.loginfo(version_string)
-                        elif(databuf[3] == 0x18):
+                        elif(databuf[3] == 0x18 or databuf[3] == 0x1c):
                             for i in range(3):
                                 x = databuf[i*4+4:i*4+8]
                                 self.Gyro[i] = struct.unpack('<f', struct.pack('4B', *x))[0]
@@ -207,7 +207,7 @@ class Sensor:
                         else:
                             self.timer_imu.shutdown()
                             self.timer_communication.shutdown()
-                            rospy.logerr("Invalid Index")
+                            rospy.logerr("Invalid Index %d"%databuf[3])
                             pass
                 else:
                     pass
@@ -246,7 +246,10 @@ class Sensor:
         self.serialIDLE_flag = 0     
     #IMU Timer callback function to get raw imu info
     def timerIMUCB(self,event):
-        output = chr(0x5a) + chr(0x06) + chr(0x01) + chr(0x17) + chr(0x00) + chr(0xff) #0x33 is CRC-8 value
+        if self.gravity:
+            output = chr(0x5a) + chr(0x06) + chr(0x01) + chr(0x17) + chr(0x00) + chr(0xff) #0x33 is CRC-8 value
+        else:
+            output = chr(0x5a) + chr(0x06) + chr(0x01) + chr(0x1b) + chr(0x00) + chr(0xff) #0x33 is CRC-8 value
         while(self.serialIDLE_flag):
             time.sleep(0.01)
         self.serialIDLE_flag = 3
