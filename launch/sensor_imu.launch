@@ -2,6 +2,7 @@
 <launch>
     <!-- support multi sensor in one master -->
     <arg name="sensor_name" default=""/>   <!-- support multi robot -->
+    <arg name="port" default="sensor_imu"/>
     <arg name="device_frame"       default="imu_module_frame" />
     <!-- frame -->
     <arg name="imu_frame"       default="imu_frame" /> 
@@ -17,7 +18,7 @@
     <group if="$(eval sensor_name == '')">
         <node name="sensor_imu"   pkg="sensor_imu"  type="sensor_imu.py" output="screen">
             <param name="baudrate"   value="115200"/>  
-            <param name="port"  value='/dev/sensor_imu'/>
+            <param name="port"  value='/dev/$(arg port)'/>
             <param name="imu_id"    value="$(arg imu_frame)"/>      <!-- imu link name -->
             <param name="imu_topic" value="$(arg imu_topic)"/>      <!-- topic name -->
             <param name="imu_freq" value="$(arg imu_freq)"/>        <!-- topic freq -->
@@ -40,7 +41,7 @@
         <group ns="$(arg sensor_name)">
             <node name="sensor_imu"   pkg="sensor_imu"  type="sensor_imu.py" output="screen">
                 <param name="baudrate"   value="115200"/>  
-                <param name="port"  value='/dev/sensor_imu'/>
+                <param name="port"  value='/dev/$(arg port)'/>
                 <param name="imu_id"    value="$(arg sensor_name)/$(arg imu_frame)"/>      <!-- imu link name -->
                 <param name="imu_topic" value="$(arg imu_topic)"/>      <!-- topic name -->
                 <param name="imu_freq" value="$(arg imu_freq)"/>        <!-- topic freq -->

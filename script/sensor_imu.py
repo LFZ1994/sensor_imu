@@ -113,11 +113,12 @@ class Sensor:
             sys.exit(0)
         rospy.loginfo("Sensor Open Succeed")
         #if move base type is ackermann car like robot and use ackermann msg ,sud ackermann topic,else sub cmd_vel topic
+        self.imu_pub = rospy.Publisher(self.imu_topic,Imu,queue_size=10)
+        self.mag_pub = rospy.Publisher(self.mag_topic,MagneticField,queue_size=10)
         self.timer_communication = rospy.Timer(rospy.Duration(1.0/1000),self.timerCommunicationCB)
         self.timer_imu = rospy.Timer(rospy.Duration(1.0/self.imu_freq),self.timerIMUCB) 
         self.timer_mag = rospy.Timer(rospy.Duration(1.0/self.mag_freq),self.timerMagCB) 
-        self.imu_pub = rospy.Publisher(self.imu_topic,Imu,queue_size=10)
-        self.mag_pub = rospy.Publisher(self.mag_topic,MagneticField,queue_size=10)
+
         self.getVersion()
         #imu initialization need about 0.2s,during initialization,move base system is blocked
         #so need this gap
