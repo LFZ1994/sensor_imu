@@ -1,7 +1,7 @@
 # sensor_imu
 WeChangeTech USB/Uart IMU modul ROS package
 
-Step1: clone this package to you workspace/src fold
+Step1: clone this package to your workspace/src fold
 
 Step2: catkin_make your workspace
 

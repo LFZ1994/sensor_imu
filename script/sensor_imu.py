@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # coding=gbk
-# Copyright 2019 Wechange Tech.
+# Copyright 2020 Wechange Tech.
 # Developer: FuZhi, Liu (liu.fuzhi@wechangetech.com)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -279,6 +279,8 @@ class Sensor:
         msg.orientation.y = self.Quat[2]
         msg.orientation.z = self.Quat[3]
         self.imu_pub.publish(msg)  
+        posEuler = tf.transformations.euler_from_quaternion([self.Quat[1],self.Quat[2],self.Quat[3],self.Quat[0]])
+        print posEuler[0]*57.32484,posEuler[1]*57.32484,posEuler[2]*57.32484
     #IMU Timer callback function to get raw imu info
     def timerMagCB(self,event):
         output = chr(0x5a) + chr(0x06) + chr(0x01) + chr(0x19) + chr(0x00) + chr(0xff) #0x33 is CRC-8 value
