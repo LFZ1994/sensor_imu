@@ -30,10 +30,10 @@
             <param name="gravity" value="$(arg gravity)"/>          <!-- use gravity -->
         </node>
         <node pkg="tf" type="static_transform_publisher" name="module_to_imu"
-            args="0.07 0.0 0.0 0.0 0.0 0.0 $(arg device_frame) $(arg imu_frame) 20">
+            args="0.007 0.0 0.0 0.0 0.0 0.0 $(arg device_frame) $(arg imu_frame) 20">
         </node>
         <node pkg="tf" type="static_transform_publisher" name="module_to_mag"
-            args="0.07 0.0 0.0 0.0 0.0 0.0 $(arg device_frame) $(arg mag_frame) 20">
+            args="0.007 0.0 0.0 0.0 0.0 0.0 $(arg device_frame) $(arg mag_frame) 20">
         </node>
     </group>
 
@@ -52,10 +52,10 @@
                 <param name="gravity" value="$(arg gravity)"/>          <!-- use gravity -->
             </node>
             <node pkg="tf" type="static_transform_publisher" name="module_to_imu"
-                args="0.07 0.0 0.0 0.0 0.0 0.0 $(arg sensor_name)/$(arg device_frame) $(arg sensor_name)/$(arg imu_frame) 20">
+                args="0.007 0.0 0.0 0.0 0.0 0.0 $(arg sensor_name)/$(arg device_frame) $(arg sensor_name)/$(arg imu_frame) 20">
             </node>
             <node pkg="tf" type="static_transform_publisher" name="module_to_mag"
-                args="0.07 0.0 0.0 0.0 0.0 0.0 $(arg sensor_name)/$(arg device_frame) $(arg sensor_name)/$(arg mag_frame) 20">
+                args="0.007 0.0 0.0 0.0 0.0 0.0 $(arg sensor_name)/$(arg device_frame) $(arg sensor_name)/$(arg mag_frame) 20">
             </node>
         </group>
     </group>
