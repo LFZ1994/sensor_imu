@@ -279,8 +279,6 @@ class Sensor:
         msg.orientation.y = self.Quat[2]
         msg.orientation.z = self.Quat[3]
         self.imu_pub.publish(msg)  
-        posEuler = tf.transformations.euler_from_quaternion([self.Quat[1],self.Quat[2],self.Quat[3],self.Quat[0]])
-        print posEuler[0]*57.32484,posEuler[1]*57.32484,posEuler[2]*57.32484
     #IMU Timer callback function to get raw imu info
     def timerMagCB(self,event):
         output = chr(0x5a) + chr(0x06) + chr(0x01) + chr(0x19) + chr(0x00) + chr(0xff) #0x33 is CRC-8 value
@@ -307,11 +305,6 @@ class Sensor:
 if __name__=="__main__":
     try:
         rospy.init_node('sensor_imu',anonymous=True)
-        # if base_type != None:
-        #     rospy.loginfo('%s base control ...'%base_type)
-        # else:
-        #     rospy.loginfo('base control ...')
-        #     rospy.logwarn('PLEASE SET BASE_TYPE ENV')
         bc = Sensor()
         rospy.spin()
     except KeyboardInterrupt:
