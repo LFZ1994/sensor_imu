@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # coding=gbk
 # Copyright 2020 Wechange Tech.
 # Developer: FuZhi, Liu (liu.fuzhi@wechangetech.com)
@@ -67,7 +67,7 @@ class queue:
 
     def show_queue(self):
         for i in range(self.capacity):
-            print self.array[i],
+            print(self.array[i], end=" ")
         print(' ')
 #class Sensor:
 class Sensor:
@@ -108,7 +108,7 @@ class Sensor:
                 rospy.loginfo("Opening Sensor Try Faild")
                 pass
         except:
-            rospy.logerr("Can not open Serial"+self.device_port)
+            rospy.logerr("Can not open Serial "+self.device_port)
             self.serial.close
             sys.exit(0)
         rospy.loginfo("Sensor Open Succeed")
@@ -149,7 +149,7 @@ class Sensor:
             reading = self.serial.read_all()
             if len(reading)!=0:
                 for i in range(0,len(reading)):
-                    data = (int(reading[i].encode('hex'),16)) 
+                    data = reading[i]
                     try:
                         self.Circleloop.enqueue(data)
                     except:
@@ -220,44 +220,44 @@ class Sensor:
     #get move base hardware & firmware version    
     def getVersion(self):
         #Get version info
-        output = chr(0x5a) + chr(0x06) + chr(0x01) + chr(0xf1) + chr(0x00) + chr(0xd7) #0xd7 is CRC-8 value
+        outputdata = [0x5a,0x06,0x01,0xf1,0x00,0xd7]
         while(self.serialIDLE_flag):
             time.sleep(0.01)
         self.serialIDLE_flag = 1
         try:
             while self.serial.out_waiting:
                 pass
-            self.serial.write(output)
+            self.serial.write(outputdata)
         except:
             rospy.logerr("Get Version Command Send Faild")
         self.serialIDLE_flag = 0 
     #get move base SN
     def getSN(self):
         #Get version info
-        output = chr(0x5a) + chr(0x06) + chr(0x01) + chr(0xf3) + chr(0x00) + chr(0x46) #0x46 is CRC-8 value
+        outputdata = [0x5a,0x06,0x01,0xf3,0x00,0x46]
         while(self.serialIDLE_flag):
             time.sleep(0.01)
         self.serialIDLE_flag = 1
         try:
             while self.serial.out_waiting:
                 pass
-            self.serial.write(output)
+            self.serial.write(outputdata)
         except:
             rospy.logerr("Get SN Command Send Faild")
         self.serialIDLE_flag = 0     
     #IMU Timer callback function to get raw imu info
     def timerIMUCB(self,event):
         if self.gravity:
-            output = chr(0x5a) + chr(0x06) + chr(0x01) + chr(0x17) + chr(0x00) + chr(0xff) #0x33 is CRC-8 value
+            outputdata = [0x5a,0x06,0x01,0x17,0x00,0xff]
         else:
-            output = chr(0x5a) + chr(0x06) + chr(0x01) + chr(0x1b) + chr(0x00) + chr(0xff) #0x33 is CRC-8 value
+            outputdata = [0x5a,0x06,0x01,0x1b,0x00,0xff]
         while(self.serialIDLE_flag):
             time.sleep(0.01)
         self.serialIDLE_flag = 3
         try:
             while self.serial.out_waiting:
                 pass
-            self.serial.write(output)
+            self.serial.write(outputdata)
         except:
             rospy.logerr("Imu Command Send Faild")
 
@@ -281,14 +281,14 @@ class Sensor:
         self.imu_pub.publish(msg)  
     #IMU Timer callback function to get raw imu info
     def timerMagCB(self,event):
-        output = chr(0x5a) + chr(0x06) + chr(0x01) + chr(0x19) + chr(0x00) + chr(0xff) #0x33 is CRC-8 value
+        outputdata = [0x5a,0x06,0x01,0x19,0x00,0x46]
         while(self.serialIDLE_flag):
             time.sleep(0.01)
         self.serialIDLE_flag = 3
         try:
             while self.serial.out_waiting:
                 pass
-            self.serial.write(output)
+            self.serial.write(outputdata)
         except:
             rospy.logerr("Mag Command Send Faild")
 
